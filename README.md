@@ -1,5 +1,5 @@
-# 5225Assignment2</n>
-Config username and email for git:</n>
-config git username and email using these two following command:</n>
-git config --global user.name "<email id>"</n>
-git config --global user.email "<your email>"</n>
+# 5225Assignment2<br>
+Config username and email for git:<br>
+config git username and email using these two following command:<br>
+git config --global user.name "<email id>"<br>
+git config --global user.email "<your email>"<br>
