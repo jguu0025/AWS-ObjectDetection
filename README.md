@@ -5,5 +5,5 @@ git config --global user.name "(email id)"<br>
 git config --global user.email "(your email)"<br>
 </p>
 
-<h2>Then set up access token</h2>
+<h2>OR set up access token</h2>
 
