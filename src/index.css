@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --amplify-primary-color: #DC2626;
+    --amplify-text-sm: 0.85rem;
+}
