@@ -1,0 +1,61 @@
+import json
+import base64
+import boto3
+
+object_detection_lambda = boto3.client('lambda')
+object_detection_crn = "arn:aws:lambda:us-east-1:541732744822:function:object-detection"
+dynamodb = boto3.resource('dynamodb')
+dynamodb_table = dynamodb.Table('Photo')
+
+def lambda_handler(event,context):
+    print("Received event: " + json.dumps(event, indent=2))
+
+
+    encoded_file_content = event['content']
+    tags = do_object_detection(encoded_file_content)
+    
+    
+    print (encoded_file_content)
+    decoded_content = base64.b64decode(encoded_file_content)
+    
+    url_list = []
+    all_items = get_all_images_from_dynamodb();
+    for item in all_items:
+        if (item['tags'] == []):
+            continue
+        is_similar = True
+        for tag in tags:
+            if (tag not in item['tags']):
+                is_similar = False
+                break
+        if (is_similar):
+            url_list.append(item['photo_url'])
+            
+    
+    
+    return{
+        'statusCode': 200,
+        'body': json.dumps('An image has been uploaded successfully!'),
+        'tags': tags,
+        'urls': url_list
+    }
+
+def do_object_detection(encoded_image):
+    # Do object detection logic here
+    inputParams = {
+        "image": encoded_image,
+    }
+    
+    detection_response = object_detection_lambda.invoke(
+        FunctionName = object_detection_crn,
+        InvocationType = "RequestResponse",
+        Payload = json.dumps(inputParams)
+    )
+    
+    detection_result = json.load(detection_response['Payload'])
+    tags = detection_result['tags']
+    return tags
+    
+def get_all_images_from_dynamodb():
+    response = dynamodb_table.scan()
+    return response['Items']
