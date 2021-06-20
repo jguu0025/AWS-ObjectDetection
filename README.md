@@ -1,4 +1,3 @@
-# 5225Assignment2<br>
 <h2>Config username and email for git:<br></h2>
 <p>
 git config --global user.name "(email id)"<br>
